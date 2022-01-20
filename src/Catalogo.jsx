@@ -3,7 +3,7 @@ import Container from "@material-ui/core/Container";
 import MediaCard from "./components/MediaCard";
 import { Grid, makeStyles } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import { getByState } from "./service";
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -13,15 +13,14 @@ const useStyles = makeStyles((theme) => ({
 const Catalogo = () => {
   const classes = useStyles();
   const [casas, setCasas] = useState(null);
-  const { type } = useParams();
+  const { state } = useParams();
   const fetchApi = async () => {
-    const response = await fetch("http://localhost/AMDVrest/public/api/casas");
-    const responseJson = await response.json();
-    setCasas(responseJson);
+    const res = await getByState(state);
+    setCasas(res);
   };
   useEffect(() => {
     fetchApi();
-  }, []);
+  });
   return (
     <div>
       {casas === null ? (

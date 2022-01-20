@@ -5,7 +5,8 @@ import MediaCard from "./MediaCard";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core";
-//import MediaCard from "./MediaCard";
+import { getFavorites } from "../service";
+
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -31,12 +32,11 @@ const useStyles = makeStyles((theme) => ({
     margin: "30px 0",
   },
 }));
-function CarouselCard(props) {
+function CarouselCard() {
   const [casas, setCasas] = useState(null);
   const classes = useStyles();
   const fetchApi = async () => {
-    const response = await fetch("http://localhost/AMDVrest/public/api/casas");
-    const responseJson = await response.json();
+    const responseJson = await getFavorites();
     setCasas(responseJson);
   };
   useEffect(() => {

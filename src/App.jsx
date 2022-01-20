@@ -43,7 +43,7 @@ const App = (props) => {
             <Route  exact path='/contacto'>
               <ContactUs></ContactUs>
             </Route>
-            <Route exact path='/tipo/:type'>
+            <Route exact path='/casas-en-venta/:state'>
               <Catalogo/>
             </Route>
           </Switch>

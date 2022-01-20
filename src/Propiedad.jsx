@@ -13,6 +13,7 @@ import BathtubIcon from "@material-ui/icons/Bathtub";
 import HotelIcon from "@material-ui/icons/Hotel";
 import SquareFootIcon from "@material-ui/icons/SquareFoot";
 import { useMediaQuery } from "@material-ui/core";
+import { getById } from "./service";
 
 const responsive = {
   superLargeDesktop: {
@@ -48,7 +49,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function Propiedad(props) {
+function Propiedad() {
   const classes = useStyle();
   const [data, setData] = useState(null);
   const { id } = useParams();
@@ -56,13 +57,13 @@ function Propiedad(props) {
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   const fetchApi = async () => {
-    const response = await fetch("http://localhost/AMDVrest/public/api/casas");
-    const responseJson = await response.json();
-    setData(responseJson);
+    const response = await getById(id);
+    console.log(response);
+    setData(response);
   };
   useEffect(() => {
     fetchApi();
-  }, []);
+  });
   return (
     <div>
       {data === null ? (
@@ -91,10 +92,10 @@ function Propiedad(props) {
           </Carousel>
           <Container maxWidth="sm">
             <Typography variant="h4" color="initial">
-              {data[0].slug}
+              {data.slug}
             </Typography>
             <Typography variant="h4" color="primary">
-              ${data[0].price}
+              ${data.price}
             </Typography>
 
             <Divider></Divider>
@@ -105,33 +106,34 @@ function Propiedad(props) {
               <Box className={classes.box}>
                 <HotelIcon />
                 <label>Recamara(s): </label>
-                {data[0].rooms}
+                {data.rooms}
               </Box>
               <Box className={classes.box}>
                 <BathtubIcon />
                 <label>Baño(s): </label>
-                {data[0].baths}
+                {data.baths}
               </Box>
               <Box className={classes.box}>
                 <BathtubIcon />
                 <label>Medios baño(s): </label>
-                {data[0].baths}
+                {data.baths}
               </Box>
               <Box className={classes.box}>
                 <SquareFootIcon />
                 <label>Area: </label>
-                {data[0].area} m<sup>2</sup>
+                {data.area} m<sup>2</sup>
               </Box>
             </div>
             <Divider />
             <Typography variant="h5" color="initial">
               Ubicacion
               <Typography variant="subtitle1" color="initial">
-                {data[0].adress}
+                {data.adress}
               </Typography>
             </Typography>
             {isSmall ? (
               <iframe
+                title="1"
                 src="https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d3762.1609405905306!2d-99.1657407!3d19.4486267!3m2!1i1024!2i768!4f13.1!2m1!1szocalo!5e0!3m2!1ses-419!2smx!4v1626837411354!5m2!1ses-419!2smx"
                 width="320"
                 height="300"
@@ -141,6 +143,7 @@ function Propiedad(props) {
               ></iframe>
             ) : (
               <iframe
+                title="2"
                 src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3163.587648578993!2d-99.16574070186886!3d19.448626698519092!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1szocalo!5e0!3m2!1ses-419!2smx!4v1626837172966!5m2!1ses-419!2smx"
                 width="600"
                 height="450"
@@ -154,7 +157,7 @@ function Propiedad(props) {
             <Typography variant="h5" color="initial">
               Descripcion
             </Typography>
-            <p>{data[0].description}</p>
+            <p>{data.description}</p>
           </Container>
         </>
       )}

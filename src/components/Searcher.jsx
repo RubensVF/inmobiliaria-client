@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,16 +8,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from '@material-ui/core/Button'
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from "react-router-dom";
-const currencies = [
-  {
-    value: "Mexico",
-    label: "Mexico",
-  },
-  {
-    value: "Hidalgo",
-    label: "Hidalgo",
-  },
-];
+import { useEffect } from "react";
+import { useState } from "react";
+import { getStates } from "../service";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,11 +42,21 @@ const useStyles = makeStyles((theme) => ({
 export default function CenteredTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [values,setValues] = useState([]);
+  const loadStates = async ()=>{
+    const res = await getStates();
+    setValues(res);
+  }
+
+  useEffect(()=>{
+    loadStates();
+  },[])
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [currency, setCurrency] = React.useState('Mexico');
+  const [currency, setCurrency] = React.useState('');
 
   const handleChangeCurrency = (event) => {
     setCurrency(event.target.value);
@@ -90,9 +94,9 @@ export default function CenteredTabs() {
           onChange={handleChangeCurrency}
           className={classes.textfield}
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {values.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
             </MenuItem>
           ))}
         </TextField>
